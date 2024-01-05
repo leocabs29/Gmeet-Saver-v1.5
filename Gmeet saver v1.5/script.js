@@ -39,12 +39,21 @@ function add() {
 
 
 function saveData() {
-    localStorage.setItem("data", list.innerHTML);
+    const data = list.innerHTML;
+    chrome.storage.sync.set({ 'data': data });
 }
 
 function showTask() {
-    list.innerHTML = localStorage.getItem("data");
+    chrome.storage.sync.get(['data'], function(result) {
+        if (result.data) {
+            list.innerHTML = result.data;
+            attachEventListeners(); 
+        }
+    });
+}
 
+
+function attachEventListeners() {
     let removeButtons = document.querySelectorAll("ul#list-container button");
     removeButtons.forEach(function (removeBtn) {
         removeBtn.addEventListener("click", function () {
@@ -54,7 +63,16 @@ function showTask() {
             saveData();
         });
     });
- 
+
+    let codeListItems = document.querySelectorAll("ul#list-container li");
+    codeListItems.forEach(function (codeList) {
+        codeList.addEventListener("click", function () {
+            let link = codeList.dataset.link;
+            if (link) {
+                window.open(link, "_blank");
+            }
+        });
+    });
 }
 
 
