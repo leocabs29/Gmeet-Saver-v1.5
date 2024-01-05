@@ -1,0 +1,21 @@
+{
+    "manifest_version": 2,
+    "name": "Gmeet Saver",
+    "version": "1.5",
+    "description": "Save and manage GMeet links",
+    "permissions": ["storage", "activeTab"],
+    "browser_action": {
+        "default_popup": "index.html"
+    },
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": false
+    },
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "js": ["content.js"]
+        }
+    ]
+    
+}
